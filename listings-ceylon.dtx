@@ -64,7 +64,7 @@
 % If you load the package without any options,
 % listings metadata will be defined but not selected by default.
 % Specifically, this package defines the |ceylon| language
-% and the |org.eclipse.ceylon.ide.eclipse.ui.theme|,
+% and the |ceylon.ide|,
 % |ceylon.rainbow| and |ceylon.paraiso| styles.
 %
 % To get proper syntax highlighting,
@@ -158,19 +158,19 @@
 \@ifpackageloaded{xcolor}{
 %    \end{macrocode}
 %
-% \begin{macro}{org.eclipse.ceylon.ide.eclipse.ui.theme}
+% \begin{macro}{ceylon.ide}
 % This style follows the Ceylon Eclipse IDE.
 % First, we define the colors,
 % taken from |org.eclipse.ceylon.ide.eclipse.ui.theme|
 % in the |ceylon-ide-eclipse| repository.
 %    \begin{macrocode}
-  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.keywords}{RGB}{76,76,76}
-  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.annotations}{RGB}{51,153,204}
-  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.identifiers}{RGB}{0,51,153}
-  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.types}{RGB}{153,0,102}
-  \colorlet{org.eclipse.ceylon.ide.eclipse.ui.theme.color.numbers}{blue}
-  \colorlet{org.eclipse.ceylon.ide.eclipse.ui.theme.color.strings}{blue}
-  \colorlet{org.eclipse.ceylon.ide.eclipse.ui.theme.color.comments}{darkgray}
+  \definecolor{ceylon.ide.color.keywords}{RGB}{76,76,76}
+  \definecolor{ceylon.ide.color.annotations}{RGB}{51,153,204}
+  \definecolor{ceylon.ide.color.identifiers}{RGB}{0,51,153}
+  \definecolor{ceylon.ide.color.types}{RGB}{153,0,102}
+  \colorlet{ceylon.ide.color.numbers}{blue}
+  \colorlet{ceylon.ide.color.strings}{blue}
+  \colorlet{ceylon.ide.color.comments}{darkgray}
 %    \end{macrocode}
 % In Ceylon, the meaning of an identifier depends on its initial case:
 % initial uppercase identifiers name classes and interfaces,
@@ -187,31 +187,31 @@
     \relax%
     \else%
     \ifnum`#1=\uccode`#1%
-    \color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.types}%
+    \color{ceylon.ide.color.types}%
     \else%
-    \color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.identifiers}%
+    \color{ceylon.ide.color.identifiers}%
     \fi%
     \fi%
   }
 %    \end{macrocode}
 % We are now ready to define the style itself.
 %    \begin{macrocode}
-  \lstdefinestyle{org.eclipse.ceylon.ide.eclipse.ui.theme}{
+  \lstdefinestyle{ceylon.ide}{
     basicstyle=\ttfamily,
-    keywordstyle=\bfseries\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.keywords},
-    keywordstyle=[2]\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.annotations},
-    keywordstyle=[3]\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.annotations},
+    keywordstyle=\bfseries\color{ceylon.ide.color.keywords},
+    keywordstyle=[2]\color{ceylon.ide.color.annotations},
+    keywordstyle=[3]\color{ceylon.ide.color.annotations},
     identifierstyle=\ceylonIdeEclipseIdentifier,
-    numberstyle=\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.numbers},
-    stringstyle=\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.strings},
-    commentstyle=\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.comments},
+    numberstyle=\color{ceylon.ide.color.numbers},
+    stringstyle=\color{ceylon.ide.color.strings},
+    commentstyle=\color{ceylon.ide.color.comments},
   }
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{ceylon.rainbow}
 % In a similar fashion, we define the |ceylon.rainbow| style.
-% It is almost identical to the |org.eclipse.ceylon.ide.eclipse.ui.theme| style;
+% It is almost identical to the |ceylon.ide| style;
 % see \href{https://github.com/eclipse/ceylon/issues/7343}{eclipse/ceylon\#7343}
 % for some discussion on the differences.
 %
@@ -321,7 +321,7 @@
 % Without \textsf{xcolor}, we still provide the same styles for consistency,
 % but we can’t do much interesting stuff with them:
 %    \begin{macrocode}
-  \lstdefinestyle{org.eclipse.ceylon.ide.eclipse.ui.theme}{
+  \lstdefinestyle{ceylon.ide}{
     basicstyle=\ttfamily,
     keywordstyle=\bfseries,
   }
@@ -342,12 +342,12 @@
 % \begin{macro}{ide}
 % The |ide| option is straightforward:
 % select the |ceylon| language
-% and the |org.eclipse.ceylon.ide.eclipse.ui.theme| style,
+% and the |ceylon.ide| style,
 % both of which were already defined above.
 %    \begin{macrocode}
 \DeclareOption{ide}{
   \lstset{language=ceylon}
-  \lstset{style=org.eclipse.ceylon.ide.eclipse.ui.theme}
+  \lstset{style=ceylon.ide}
 }
 %    \end{macrocode}
 % \end{macro}

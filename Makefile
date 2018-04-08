@@ -6,6 +6,7 @@ all: listings-ceylon.sty listings-ceylon.pdf
 
 listings-ceylon.sty: listings-ceylon.ins listings-ceylon.dtx
 	$(RM) listings-ceylon.log
+	$(RM) $@ # otherwise, docstrip asks before overwriting the target file
 	latex $<
 
 listings-ceylon.pdf: listings-ceylon.dtx

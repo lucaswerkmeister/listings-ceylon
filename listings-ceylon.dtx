@@ -85,14 +85,35 @@
 % Both will set the default language for listings to Ceylon
 % and select the appropriate syntax highlighting style.
 %
+% \begin{verbatim}
+% \usepackage[ide]{listings-ceylon}
+% \end{verbatim}
+%
+% \begin{verbatim}
+% \usepackage[website]{listings-ceylon}
+% \end{verbatim}
+%
 % If you load the package without any options,
 % listings metadata will be defined but not selected by default.
 % Specifically, this package defines the |ceylon| language
 % and the |ceylon.ide|,
 % |ceylon.rainbow| and |ceylon.paraiso| styles.
 %
+% \begin{verbatim}
+% \usepackage{listings-ceylon}
+%
+% % ...
+%
+% \lstinputlisting[language=ceylon,style=ceylon.ide]{foo.ceylon}
+% \end{verbatim}
+%
 % To get proper syntax highlighting,
 % make sure to load this package after \textsf{xcolor}.
+%
+% \begin{verbatim}
+% \usepackage{xcolor}
+% \usepackage[ide]{listings-ceylon}
+% \end{verbatim}
 %
 % \subsection{A note on inline code snippets}
 %

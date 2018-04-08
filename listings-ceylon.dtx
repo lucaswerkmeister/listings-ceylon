@@ -1,0 +1,407 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2018 by Lucas Werkmeister
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3 of this license or (at your option) any later
+% version.  The latest version of this license is in:
+%
+%    http://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of
+% LaTeX version 2005/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<package>\NeedsTeXFormat{LaTeX2e}[2005/12/01]
+%<package>\ProvidesPackage{listings-ceylon}
+%<package>   [2018/04/08 v1.0 Ceylon language support for listings]
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{listings-ceylon}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+\DocInput{listings-ceylon.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{149}
+%
+% \changes{v1.0}{2018/04/08}{Initial version}
+%
+% \GetFileInfo{listings-ceylon.sty}
+%
+% \title{The \textsf{listings-ceylon} package\thanks{This document
+%   corresponds to \textsf{listings-ceylon}~\fileversion,
+%   dated~\filedate.}}
+% \author{Lucas Werkmeister\\\texttt{mail@lucaswerkmeister.de}}
+%
+% \maketitle
+%
+% \section{Introduction}
+%
+% This package adds support for the Ceylon programming language
+% to the \textsf{listings} package and makes it easy to use:
+% in the simplest case, after importing the package
+% you don’t need any other setup in the document preamble.
+%
+% \section{Usage}
+%
+% The simplest way to use this package is to load it
+% with either the |ide| or the |website| options.
+% Both will set the default language for listings to Ceylon
+% and select the appropriate syntax highlighting style.
+%
+% If you load the package without any options,
+% listings metadata will be defined but not selected by default.
+% Specifically, this package defines the |ceylon| language
+% and the |org.eclipse.ceylon.ide.eclipse.ui.theme|,
+% |ceylon.rainbow| and |ceylon.paraiso| styles.
+%
+% To get proper syntax highlighting,
+% make sure to load this package after \textsf{xcolor}.
+%
+% \subsection{A note on inline code snippets}
+%
+% The |ceylon.paraiso| style uses a dark background color,
+% but the \textsf{listings} package ignores the background color
+% for inline code snippets (|\lstinline|) by default.
+% To make sure that inline code is still readable,
+% the |website| option not only selects the |ceylon.paraiso| style
+% but also overrides the |\lstinline| command
+% to apply the background color as well.
+% An unfortunate side effect of this is that the |\lstinline| command
+% loses its special syntax and can only be called conventionally;
+% in other words, if this package is loaded with the |website| option,
+% you can only use |\lstinline{foo}| but not |\lstinline!foo!| or the like.
+%
+% \StopEventually{\PrintIndex}
+%
+% \section{Implementation}
+%
+% For obvious reasons, this package requires \textsf{listings}.
+%    \begin{macrocode}
+\RequirePackage{listings}
+%    \end{macrocode}
+% (Perhaps less obviously, it does not \emph{require} \textsf{xcolor} –
+% that’s an optional dependency which we’ll get to later.)
+%
+% \begin{macro}{ceylon}
+% We define the |ceylon| language
+% with the appropriate syntax highlighting directives.
+%    \begin{macrocode}
+\lstdefinelanguage{ceylon}{
+%    \end{macrocode}
+% We start with the true keywords of the language,
+% as listed in §2.3 of the Ceylon Language Specification.
+%    \begin{macrocode}
+  morekeywords={
+    assembly, module, package, import,
+    alias, class, interface, object,
+    given, value, assign, void, function, new,
+    of, extends, satisfies, abstracts,
+    in, out,
+    return, break, continue, throw,
+    assert, dynamic,
+    if, else, switch, case, for, while, try, catch, finally, then, let,
+    this, outer, super,
+    is, exists, nonempty
+  },
+%    \end{macrocode}
+% Since listings does not provide us with the possiblity
+% to provide a full parser of the language,
+% we also define several standard language annotations as “keywords”,
+% in separate keyword lists for modifiers (2) and documentation (3).
+%    \begin{macrocode}
+  morekeywords=[2]{
+    shared, abstract, formal, default, actual,
+    variable, late, native, deprecated, final, sealed,
+    annotation, suppressWarnings, small, static
+  },
+  morekeywords=[3]{
+    doc, by, license, see, throws, tagged
+  },
+%    \end{macrocode}
+% Ceylon keywords are case sensitive.
+%    \begin{macrocode}
+  sensitive=true,
+%    \end{macrocode}
+% Ceylon features end-of-line and block comments;
+% block comments can be nested.
+%    \begin{macrocode}
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+%    \end{macrocode}
+% String and character literals are enclosed by quotation marks,
+% and quotation marks inside the literals are escaped with backslashes.
+% (This syntax definition doesn’t support string templates
+% or verbatim string literals yet.)
+%    \begin{macrocode}
+  morestring=[b]",
+  morestring=[b]',
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% If the \textsf{xcolor} package is loaded,
+% we can make use of it to provide full syntax highlighting.
+%    \begin{macrocode}
+\@ifpackageloaded{xcolor}{
+%    \end{macrocode}
+%
+% \begin{macro}{org.eclipse.ceylon.ide.eclipse.ui.theme}
+% This style follows the Ceylon Eclipse IDE.
+% First, we define the colors,
+% taken from |org.eclipse.ceylon.ide.eclipse.ui.theme|
+% in the |ceylon-ide-eclipse| repository.
+%    \begin{macrocode}
+  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.keywords}{RGB}{76,76,76}
+  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.annotations}{RGB}{51,153,204}
+  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.identifiers}{RGB}{0,51,153}
+  \definecolor{org.eclipse.ceylon.ide.eclipse.ui.theme.color.types}{RGB}{153,0,102}
+  \colorlet{org.eclipse.ceylon.ide.eclipse.ui.theme.color.numbers}{blue}
+  \colorlet{org.eclipse.ceylon.ide.eclipse.ui.theme.color.strings}{blue}
+  \colorlet{org.eclipse.ceylon.ide.eclipse.ui.theme.color.comments}{darkgray}
+%    \end{macrocode}
+% In Ceylon, the meaning of an identifier depends on its initial case:
+% initial uppercase identifiers name classes and interfaces,
+% while initial lowercase identifiers name values and members.
+% To distinguish them, we use a special helper macro,
+% based on an answer on TeX StackExchange (\url{https://tex.stackexchange.com/a/4199/25264}).
+% (This syntax definition doesn’t support the special |\iFoo|/|\Ifoo| syntax yet.)
+%    \begin{macrocode}
+  \newcommand*\ceylonIdeEclipseIdentifier{%
+    \expandafter\ceylonIdeEclipseIdentifier@style\the\lst@token\relax%
+  }
+  \def\ceylonIdeEclipseIdentifier@style#1#2\relax{%
+    \ifcat#1%
+    \relax%
+    \else%
+    \ifnum`#1=\uccode`#1%
+    \color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.types}%
+    \else%
+    \color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.identifiers}%
+    \fi%
+    \fi%
+  }
+%    \end{macrocode}
+% We are now ready to define the style itself.
+%    \begin{macrocode}
+  \lstdefinestyle{org.eclipse.ceylon.ide.eclipse.ui.theme}{
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.keywords},
+    keywordstyle=[2]\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.annotations},
+    keywordstyle=[3]\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.annotations},
+    identifierstyle=\ceylonIdeEclipseIdentifier,
+    numberstyle=\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.numbers},
+    stringstyle=\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.strings},
+    commentstyle=\color{org.eclipse.ceylon.ide.eclipse.ui.theme.color.comments},
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{ceylon.rainbow}
+% In a similar fashion, we define the |ceylon.rainbow| style.
+% It is almost identical to the |org.eclipse.ceylon.ide.eclipse.ui.theme| style;
+% see \href{https://github.com/eclipse/ceylon/issues/7343}{eclipse/ceylon\#7343}
+% for some discussion on the differences.
+%
+% We begin with the color definitions,
+% this time taken from |typechecker/en/styles/ceylon.css|
+% in the |ceylon| repository.
+% (The comment color is named as “darkcyan” in the CSS file,
+% but \textsf{xcolor} doesn’t know that color,
+% so we have to specify its value.)
+%    \begin{macrocode}
+  \definecolor{ceylon.rainbow.comment}{HTML}{008b8b}
+  \colorlet{ceylon.rainbow.constant.numeric}{blue}
+  \colorlet{ceylon.rainbow.constant.string}{blue}
+  \definecolor{ceylon.rainbow.entity.function}{RGB}{51,153,204}
+  \definecolor{ceylon.rainbow.entity.class}{RGB}{153,0,102}
+  \definecolor{ceylon.rainbow.variable.global}{RGB}{0,51,153}
+  \definecolor{ceylon.rainbow.keyword}{RGB}{76,76,76}
+%    \end{macrocode}
+% We use a similar helper macro as before for identifiers.
+%    \begin{macrocode}
+  \newcommand*\ceylonRainbowIdentifier{%
+    \expandafter\ceylonRainbowIdentifier@style\the\lst@token\relax%
+  }
+  \def\ceylonRainbowIdentifier@style#1#2\relax{%
+    \ifcat#1%
+    \relax%
+    \else%
+    \ifnum`#1=\uccode`#1%
+    \color{ceylon.rainbow.entity.class}%
+    \else%
+    \color{ceylon.rainbow.variable.global}%
+    \fi%
+    \fi%
+  }
+%    \end{macrocode}
+% The syntax definition naturally arises.
+%    \begin{macrocode}
+  \lstdefinestyle{ceylon.rainbow}{
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries\color{ceylon.rainbow.keyword},
+    keywordstyle=[2]\color{ceylon.rainbow.entity.function},
+    keywordstyle=[3]\color{ceylon.rainbow.entity.function},
+    identifierstyle=\ceylonRainbowIdentifier,
+    numberstyle=\color{ceylon.rainbow.constant.numeric},
+    stringstyle=\color{ceylon.rainbow.constant.string},
+    commentstyle=\color{ceylon.rainbow.comment},
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{ceylon.paraiso}
+% Finally, we turn to the |ceylon.paraiso| style.
+% At first, it goes just like the |ceylon.rainbow| style.
+% The color definitions come from |stylesheets/themes/paraiso-dark.css|
+% in the |ceylon-lang.org| repository.
+%    \begin{macrocode}
+  \definecolor{ceylon.paraiso.background}{HTML}{2f1e2e}
+  \definecolor{ceylon.paraiso.foreground}{HTML}{e7e9db}
+  \definecolor{ceylon.paraiso.comment}{HTML}{776e71}
+  \definecolor{ceylon.paraiso.constant.numeric}{HTML}{f99b15}
+  \definecolor{ceylon.paraiso.constant.string}{HTML}{48b685}
+  \definecolor{ceylon.paraiso.entity.function}{HTML}{06b6ef}
+  \definecolor{ceylon.paraiso.entity.class}{HTML}{fec418}
+  \definecolor{ceylon.paraiso.variable.global}{HTML}{ef6155}
+  \definecolor{ceylon.paraiso.keyword}{HTML}{b8baaf}
+%    \end{macrocode}
+% Again we turn to the helper macro for identifiers.
+%    \begin{macrocode}
+  \newcommand*\ceylonParaisoIdentifier{%
+    \expandafter\ceylonParaisoIdentifier@style\the\lst@token\relax%
+  }
+  \def\ceylonParaisoIdentifier@style#1#2\relax{%
+    \ifcat#1%
+    \relax%
+    \else%
+    \ifnum`#1=\uccode`#1%
+    \color{ceylon.paraiso.entity.class}%
+    \else%
+    \color{ceylon.paraiso.variable.global}%
+    \fi%
+    \fi%
+  }
+%    \end{macrocode}
+% The syntax definition is much like the others,
+% except with the addition of a |backgroundcolor|.
+% (Note: the redefinition of |\lstinline| to apply the background color there
+% comes only later.)
+%    \begin{macrocode}
+  \lstdefinestyle{ceylon.paraiso}{
+    basicstyle=\ttfamily\color{ceylon.paraiso.foreground},
+    backgroundcolor=\color{ceylon.paraiso.background},
+    keywordstyle=\color{ceylon.paraiso.keyword},
+    keywordstyle=[2]\color{ceylon.paraiso.entity.function},
+    keywordstyle=[3]\color{ceylon.paraiso.entity.function},
+    identifierstyle=\ceylonParaisoIdentifier,
+    numberstyle=\color{ceylon.paraiso.constant.numeric},
+    stringstyle=\color{ceylon.paraiso.constant.string},
+    commentstyle=\color{ceylon.paraiso.comment},
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% Recall that all of this was only in case the \textsf{xcolor} package was loaded.
+%    \begin{macrocode}
+}{
+%    \end{macrocode}
+% Without \textsf{xcolor}, we still provide the same styles for consistency,
+% but we can’t do much interesting stuff with them:
+%    \begin{macrocode}
+  \lstdefinestyle{org.eclipse.ceylon.ide.eclipse.ui.theme}{
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries,
+  }
+  \lstdefinestyle{ceylon.rainbow}{
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries,
+  }
+  \lstdefinestyle{ceylon.paraiso}{
+    basicstyle=\ttfamily,
+  }
+}
+%    \end{macrocode}
+% The omission of |\bfseries| for the |ceylon.paraiso| style is not an error –
+% the website intentionally does not set keywords in bold,
+% the idea being that keywords are actually
+% among the least interesting parts of the code.
+%
+% \begin{macro}{ide}
+% The |ide| option is straightforward:
+% select the |ceylon| language
+% and the |org.eclipse.ceylon.ide.eclipse.ui.theme| style,
+% both of which were already defined above.
+%    \begin{macrocode}
+\DeclareOption{ide}{
+  \lstset{language=ceylon}
+  \lstset{style=org.eclipse.ceylon.ide.eclipse.ui.theme}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{website}
+% The |website| option is a bit more interesting –
+% if that option is used,
+% we want to override the |\lstinline| command
+% so that it also applies the dark background color
+% of the |ceylon.paraiso| style,
+% otherwise the code is nigh unreadable.
+% This requires additional packages;
+% however, we cannot load packages inside of an option definition,
+% so we need to define a new conditional which we set in the option,
+% and load the packages depending on that conditional later.
+%    \begin{macrocode}
+\newif\ifceylon@patchLstinline
+%    \end{macrocode}
+% The option itself works much like |ide|,
+% except that we also toggle the conditional –
+% but only if \textsf{xcolor} is also loaded,
+% otherwise there’s no point to overriding |\lstinline|.
+%    \begin{macrocode}
+\DeclareOption{website}{
+  \lstset{language=ceylon}
+  \lstset{style=ceylon.paraiso}
+  \@ifpackageloaded{xcolor}{
+    \ceylon@patchLstinlinetrue
+  }{}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% With all the options defined, it’s time to process them.
+%    \begin{macrocode}
+\ExecuteOptions{}
+\ProcessOptions\relax
+%    \end{macrocode}
+% Now we can process the conditional we defined earlier;
+% if the |\lstinline| command needs to be patched
+% in order to apply the background color,
+% we prepend a color box using that background color.
+% This code is based on another answer on TeX StackExchange
+% (\url{https://tex.stackexchange.com/a/357339/25264}).
+%    \begin{macrocode}
+\ifceylon@patchLstinline
+  \RequirePackage{xpatch}
+  \RequirePackage{realboxes}
+  \xpretocmd\lstinline{%
+    \Colorbox{ceylon.paraiso.background}%
+    \bgroup\appto\lst@DeInit{\egroup}%
+  }{}{}
+\fi
+%    \end{macrocode}
+%
+% \Finale
+\endinput

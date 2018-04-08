@@ -24,7 +24,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage{microtype}
-\usepackage{listings-ceylon}
+\usepackage{xcolor}
+\usepackage[ide]{listings-ceylon}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -53,6 +54,29 @@
 % to the \textsf{listings} package and makes it easy to use:
 % in the simplest case, after importing the package
 % you don’t need any other setup in the document preamble.
+%
+% \begin{verbatim}
+% \usepackage{xcolor}
+% \usepackage[ide]{listings-ceylon}
+%
+% \begin{document}
+% \begin{lstlisting}
+% shared void run() {
+%     String name = process.arguments.first else "World";
+%     value greeting = "Hello, " + name + "!";
+%     print(greeting);
+% }
+% \end{lstlisting}
+% \end{document}
+% \end{verbatim}
+%
+% \begin{lstlisting}[gobble=2]
+% shared void run() {
+%     String name = process.arguments.first else "World";
+%     value greeting = "Hello, " + name + "!";
+%     print(greeting);
+% }
+% \end{lstlisting}
 %
 % \section{Usage}
 %

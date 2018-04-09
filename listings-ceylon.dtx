@@ -231,8 +231,7 @@
     \expandafter\ceylonIdeEclipseIdentifier@style\the\lst@token\relax%
   }
   \def\ceylonIdeEclipseIdentifier@style#1#2\relax{%
-    \ifcat#1%
-    \relax%
+    \ifcat#1\relax%
     \else%
     \ifnum`#1=\uccode`#1%
     \color{ceylon.ide.color.types}%
@@ -284,8 +283,7 @@
     \expandafter\ceylonRainbowIdentifier@style\the\lst@token\relax%
   }
   \def\ceylonRainbowIdentifier@style#1#2\relax{%
-    \ifcat#1%
-    \relax%
+    \ifcat#1\relax%
     \else%
     \ifnum`#1=\uccode`#1%
     \color{ceylon.rainbow.entity.class}%
@@ -332,8 +330,7 @@
     \expandafter\ceylonParaisoIdentifier@style\the\lst@token\relax%
   }
   \def\ceylonParaisoIdentifier@style#1#2\relax{%
-    \ifcat#1%
-    \relax%
+    \ifcat#1\relax%
     \else%
     \ifnum`#1=\uccode`#1%
     \color{ceylon.paraiso.entity.class}%
